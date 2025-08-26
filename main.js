@@ -123,7 +123,7 @@ function bicondicional(n, opc=1) {
         }
     }
     if (n > 2) {
-        (opc === 1)?header(n, '<-->', 80, 0, 1):header(n, '<-->', 79+n, 0, -1);
+        (opc === 1 || opc === 3)?(opc === 3)?header(n, '<--> -', 80, 0, 1, '-'):header(n, '<-->', 80, 0, 1):(opc === 2)?header(n, '<-->', 79+n, 0, -1):header(n, '<--> -', 79+n, 0, -1, '-');
         for (let v= [], j = 0; j < 2**n; j++) {
             v[j] = true;
             for(let i = 0; i < n-1; v[j]=v[j]&&(variables[i][j] || !variables[i+1][j]) && (variables[i+1][j] || !variables[i][j]), i++);
