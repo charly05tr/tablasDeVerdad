@@ -26,7 +26,8 @@
     </head>
     <body>
         <header class='d-flex flex-column align-items-center justify-content-center'>
-            <h1 class='m-4'>Tablas de Verdad</h1>
+            <a href='https://tablas-de-verdad-md.onrender.com/tablas_verdad/' class='align-self-end p-2'>Tablas por proposición</a>
+            <h1 class='mb-4'>Tablas de Verdad</h1>
             <form class='d-flex flex-column align-items-center justify-content-center'>
                 <div class='mb-4 d-flex align-items-center justify-content-center gap-4'> 
                     <div>
@@ -50,7 +51,17 @@
                         </select>
                     </div>
                 </div>
-                <button type='submit' class='btn btn-primary'>Generar tabla</button>
+                    <div class='mb-4' id='vari-cont' hidden>                                                                                                                           
+                        <label class="fs-sm-6" for='variantes'>Seleccione una variante</label>
+                        <select id='variantes' class='form-select'>
+                            <option selected hidden value=0>Variantes</option>
+                            <option value=1>Directa</option>                                                                                                          
+                            <option value=2>Recíproca</option>
+                            <option value=3>Inversa</option>
+                            <option value=4>Contrarecíproca</option>
+                        </select>
+                    </div>
+                    <button type='submit' class='btn btn-primary'>Generar tabla</button>
         </form>
         </header>
         <hr/>

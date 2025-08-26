@@ -93,7 +93,6 @@ function condicional(n) {
         header(n, '-->', 79+n, 0, -1, '(der) ');
         for (let j = 0; j < 2**n; j++) 
             insertarValor((n === 4) ? r[2][j] || r[5][j] || r[8][j]: r[1][j] || r[3][j], j);
-
         header(n, '-->', 80, 0, 1, '(izq) ');
         for (let j = 0, v = []; j < 2**n; j++) {
             v[j] = true;
@@ -103,24 +102,33 @@ function condicional(n) {
     } 
 }
 
-function bicondicional(n) {      
+function bicondicional(n, opc=1) {      
     const r = [];
-    for (let i = 0, v = 0, t = 1; i < (n * (n-1) / 2); i++, t++) {
+    for (let i = 0, v = 0, t = 0; i < (n * (n-1) / 2)*2; i++, t++) {
         r[i] = [];
-        if (t-1 === n-(v+1)) {
+        if (t - (n%2) === parseInt((2**n)/n)) {
             v++;
-            t = 1;
+            t = 0;
         }
-        header(2, '<-->', 80 + v, t, 0);
+        if (t === v) 
+            t++;
+        if (v > t && (opc === 1 || opc === 3))
+            continue;
+        if (v < t && (opc === 2 || opc === 4))
+            continue;
+        (opc === 3 || opc === 4)?header(2,'<--> -', 80 + v, t-v, 0,'-'):header(2, '<-->', 80 + v, t-v, 0);
         for (let j = 0; j < 2**n; j++) {
-            r[i][j] =  (variables[v][j] || !variables[v+t][j]) && (variables[v+t][j] || !variables[v][j]);
+            r[i][j] =  (variables[v][j] || !variables[t][j]) && (variables[t][j] || !variables[v][j]);
             insertarValor(r[i][j], j);
         }
     }
     if (n > 2) {
-        header(n, '<-->');
-        for (let j = 0; j < 2**n; j++) 
-            insertarValor((n === 4) ? r[0][j] && r[2][j] && r[5][j]: r[0][j] && r[2][j], j);
+        (opc === 1)?header(n, '<-->', 80, 0, 1):header(n, '<-->', 79+n, 0, -1);
+        for (let v= [], j = 0; j < 2**n; j++) {
+            v[j] = true;
+            for(let i = 0; i < n-1; v[j]=v[j]&&(variables[i][j] || !variables[i+1][j]) && (variables[i+1][j] || !variables[i][j]), i++);
+            insertarValor(v[j], j);
+        }
     } 
 }
 
@@ -140,11 +148,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (operacion !== '0' && (n > 0 && n < 5)) {
             document.querySelector('table').innerHTML = `<thead><tr id='thead'></tr><thead/><tbody></tbody>`;
+            const variante = parseInt(document.querySelector('#variantes').value);
             definirValores(n);  
-            operaciones[operacion](n);
+            operaciones[operacion](n, variante);
         }
         else {
             alert('Seleccione una operación y una cantidad de variables.');
         }
     });
+
+    document.querySelector('#operaciones').addEventListener('change', (e) => {
+        if (e.target.value === 'bicond') {
+            document.querySelector('#vari-cont').hidden = false;
+         }
+         else {
+            document.querySelector('#vari-cont').hidden = true;
+         }
+    })
 });
