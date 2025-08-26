@@ -147,7 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const n = parseInt(document.querySelector('#variables').value);
         const variante = parseInt(document.querySelector('#variantes').value);
 
-        if (operacion !== '0' && (n > 0 && n < 5) && variante !== 0) {
+        if (operacion !== '0' && (n > 0 && n < 5)) {
             document.querySelector('table').innerHTML = `<thead><tr id='thead'></tr><thead/><tbody></tbody>`;
             definirValores(n);  
             operaciones[operacion](n, variante);
